@@ -76,7 +76,6 @@ class PiController:
     def write_analog_pwm(self, name, duty_cycle):
         """
         Write PWM using a scale from 0.0 (off) to 1.0 (full brightness/speed).
-        This method automatically handles the conversion to lgpio's 0-100 scale.
         """
         if name not in self.devices or self.devices[name]["type"] != "pwm":
             print(f"Error: {name} is not registered as a PWM output.")
