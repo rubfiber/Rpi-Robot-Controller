@@ -4,6 +4,7 @@ from signal import signal, SIGTERM, SIGHUP
 from src.main.DCMotor import DCMotor
 from src.main.L293D import L293D
 from src.main.UltrasonicSensor import UltrasonicSensor
+from src.main.SG90Servo import Servo180Degree as Servo
 from time import sleep
 # ============================================================================
 # EXAMPLE USAGE
@@ -24,14 +25,16 @@ if __name__ == "__main__":
 
     controller.add_pwm_output("LED", 16)
     us = UltrasonicSensor(24, 23  , controller=controller)
-        
+
+    servo = Servo(16, controller =controller, name="myServo")
     try:
-       while True:
-         dist = us.runDistanceLoop()
-         if dist is not None:
-            print(dist)
-         else:
-          print("No reading (timeout)")
+        # servo.sweep(step=5, delay=0.05)
+        while True:
+          dist = us.runDistanceLoop()
+          if dist is not None:
+             print(dist)
+          else:
+           print("No reading (timeout)")
 
     except KeyboardInterrupt:
         safe_exit(None, None)
