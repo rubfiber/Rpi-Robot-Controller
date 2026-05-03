@@ -10,26 +10,33 @@ class UltrasonicSensor:
         self.controller.add_digital_output(name + "trigger", trig)
         self.controller.add_digital_input(name + "echo", echo)
 
-    def runDistanceLoop(self, pulse=0.00001, interval=0.1):
+    def runDistanceLoop(self, pulse=0.00001, interval=0.1, timeout=0.1):
         self.controller.write_digital(self.name + "trigger", 1)
-        time.sleep(pulse)  # 10 microsecond pulse
+        time.sleep(pulse)
         self.controller.write_digital(self.name + "trigger", 0)
 
-        # 2. Capture start and end times (Synchronous/Blocking)
-        # Note: We keep these loops tight for accuracy
-        pulse_start = time.time()
-        pulse_end = time.time()
+        deadline = time.time() + timeout
+        pulse_start = None
+        pulse_end = None
 
         while self.controller.read_digital(self.name + "echo") == 0:
+            if time.time() > deadline:
+                print("DEBUG: timed out waiting for echo HIGH")  # stuck here?
+                return None
             pulse_start = time.time()
-            
+
+
         while self.controller.read_digital(self.name + "echo") == 1:
+            if time.time() > deadline:
+                print("DEBUG: timed out waiting for echo LOW")  # or here?
+                return None
             pulse_end = time.time()
 
-        # 3. Calculate distance
-        duration = pulse_end - pulse_start
-        distance = round(duration * 17150, 2)  # Speed of sound (343m/s) / 2
 
+        if pulse_start is None or pulse_end is None:
+            return None
+
+        duration = pulse_end - pulse_start
+        distance = round(duration * 17150, 2)
         time.sleep(interval)
         return distance
-    

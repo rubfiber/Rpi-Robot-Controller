@@ -19,15 +19,19 @@ if __name__ == "__main__":
     signal(SIGHUP, safe_exit)
 
     # Setup
-    MotorController = L293D(13, 19, 5, 0, 0, 0, controller, "L293D")
-    Motor = DCMotor(MotorController, 0, controller)
+    #MotorController = L293D(13, 19, 5, 0, 0, 0, controller, "L293D")
+    #Motor = DCMotor(MotorController, 0, controller)
 
     controller.add_pwm_output("LED", 16)
-    us = UltrasonicSensor(19, 13, controller=controller)
+    us = UltrasonicSensor(24, 23, controller=controller)
         
     try:
-        while True:
-            print(us.runDistanceLoop())
+       while True:
+         dist = us.runDistanceLoop()
+         if dist is not None:
+            print(dist)
+         else:
+          print("No reading (timeout)")
 
     except KeyboardInterrupt:
         safe_exit(None, None)
