@@ -9,9 +9,9 @@ Make a new instance of the PiController class from Controller.py. Add your devic
 an example is given in Main.py.
 ```    
 try:
-       #code here
-       while True:
-            #Loop if you need it
-    except KeyboardInterrupt:
-        safe_exit(None, None)
+    #code here
+    while True:
+        #Loop if you need it
+except KeyboardInterrupt:
+    safe_exit(None, None)
 ```
