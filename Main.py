@@ -23,7 +23,7 @@ if __name__ == "__main__":
     #Motor = DCMotor(MotorController, 0, controller)
 
     controller.add_pwm_output("LED", 16)
-    us = UltrasonicSensor(24, 23, controller=controller)
+    us = UltrasonicSensor(24, 23  , controller=controller)
         
     try:
        while True:
