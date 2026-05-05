@@ -46,23 +46,23 @@ class L293D:
                         "input": in4, 
                         }
     def directionalControl(self, motor: int, power):
-       if motor == 0:
-        input1_name = "input 1"
-        input2_name = "input 2"
-        enable_name = self.name + "1"
-       else:
-        input1_name = "input 3"
-        input2_name = "input 4"
-        enable_name = self.name + "2"
+      if motor == 0:
+          input1_name = "input 1"
+          input2_name = "input 2"
+          enable_name = self.name + "1"
+      else:
+          input1_name = "input 3"
+          input2_name = "input 4"
+          enable_name = self.name + "2"
 
-       if power >= 0:
-        self.controller.write_digital(input1_name, 1)  # forward
-        self.controller.write_digital(input2_name, 0)
-       else:
-        self.controller.write_digital(input1_name, 0)  # reverse
-        self.controller.write_digital(input2_name, 1)
+      if power >= 0:
+          self.controller.write_digital(input1_name, 1)
+          self.controller.write_digital(input2_name, 0)
+      else:
+          self.controller.write_digital(input1_name, 0)
+          self.controller.write_digital(input2_name, 1)
 
-        self.controller.write_analog_pwm(enable_name, abs(power))
+      self.controller.write_analog_pwm(enable_name, abs(power))
       #  def quadControl(motor:dict, power):
         #    if motor.enable == self.enable12:
          #      if power >= 0:

@@ -20,21 +20,23 @@ if __name__ == "__main__":
     signal(SIGHUP, safe_exit)
 
     # Setup
-    #MotorController = L293D(13, 19, 5, 0, 0, 0, controller, "L293D")
-    #Motor = DCMotor(MotorController, 0, controller)
+    MotorController = L293D(13, 17, 12, 11, 9, 10, controller, "L293D")
+    Motor = DCMotor(MotorController, 0, controller)
 
     controller.add_pwm_output("LED", 16)
-    us = UltrasonicSensor(24, 23  , controller=controller)
+    us = UltrasonicSensor(24, 23, controller=controller)
 
     servo = Servo(16, controller =controller, name="myServo")
     try:
-        # servo.sweep(step=5, delay=0.05)
-        while True:
-          dist = us.runDistanceLoop()
-          if dist is not None:
-             print(dist)
-          else:
-           print("No reading (timeout)")
-
+     Motor.setPower(0.1)
+     while True:
+            Motor.setPower(1)
+            sleep(2)
+            Motor.setPower(0)   # stop first
+            sleep(0.5)      # let it come to a stop
+            Motor.setPower(-1)
+            sleep(2)
+            Motor.setPower(0)
+            sleep(0.5)
     except KeyboardInterrupt:
         safe_exit(None, None)
